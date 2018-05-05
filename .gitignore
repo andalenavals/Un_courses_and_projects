@@ -1,0 +1,20 @@
+#Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Images and data files
+*.png
+*~
+*.json
+*.err
+*.out
+*.qbs
+*.eps
+*.pdf
+*.jgp
+*#
+*.#
+
+# mypy
+.mypy_cache/

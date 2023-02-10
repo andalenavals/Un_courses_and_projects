@@ -1,5 +1,6 @@
 import numpy as np
-import itertools, copy
+import itertools
+import copy
 
 def f2(s):
     return s[1]/(s[1]+s[0])
@@ -41,7 +42,8 @@ def f(players, si):
     q_list=[]
     for a in itertools.product([1,0],repeat=n_nodes): #loop for all possible combinations
         prob_layer=[]; players_lay=copy.deepcopy(players); 
-        for i,j in itertools.pairwise(index): #propagate through layers
+        #for i,j in itertools.pairwise(index): #propagate through layers
+        for i,j in zip(index,index[1:]):
             selector=np.concatenate([s for s in zip(np.array(a)[j:i], 1^np.array(a)[j:i]) ])
             skillpair=np.concatenate([ [sum(players_lay[2*h:2*(h+1)])]*2 for h in range(len(players_lay)//2)])
             skillpair*=selector; skillpair=skillpair[skillpair !=0]
@@ -71,7 +73,8 @@ def main():
     count=0; subtree=[]
     index=[n-2**l for l in range(1,k+1)];
     
-    for i,j in itertools.pairwise(index):
+    #for i,j in itertools.pairwise(index):
+    for i,j in zip(index,index[1:]):
         print("Doing subtree %i"%(count))
         subtree.append(f(skills[j:i],si)*si)
         count+=1

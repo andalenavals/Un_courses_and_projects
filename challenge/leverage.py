@@ -2,34 +2,41 @@ import numpy as np
 import scipy
 from scipy.optimize import fsolve
 
-mu=0.05
-sigma=0.1
-p=1./100.
-C0=100
-b=0.5
-L=70
+mu=0.05    # returns distribution mean
+sigma=0.1 # returns distribution std
+p=0.01     # probality of wealth < L
+C0=100.    # initial capital
+b=0.5      # percentage of borrow possible
+L=70.      # Minimum allowed wealth
+N=5        #number of years
 
+# CDF of a gaussian
 def func(x):    
     return p-0.5*(1+scipy.special.erf((x-mu)/(sigma*np.sqrt(2))))
 
+# see document
 def X(C,r,b,L):
     return (L-C)/((1+b)*r)
 
+#Just a quick logger.
 def Verbose(C,B,BI,I,CNI, P):
     print("Borrowed money: ", BI)
     print("Acumulated borrowed money:", B)
     print("Investment: ", I)
     print("Save money: ", CNI)
     print("Profit: ", P)
-    print("Capital: ", C)
-
+    print("Wealth: ", C0+P)
+    print("Capital: ", C, "\n")
 
 def get_profit(returns,r,verbose=False):
-    
+    '''
+    returns: list of returns
+    r: minimum allowed return
+    '''
     B=0
     C=C0
     if verbose: print( "Initial capital:", C0)
-    for mu in returns:
+    for i, mu in enumerate(returns):
         CI=X(C-B,r,b,L)  # capital invested
         CNI=C-CI         # capital no invested
         if CI>C:
@@ -42,14 +49,14 @@ def get_profit(returns,r,verbose=False):
         PROFIT=C-B-C0
         if verbose: Verbose(C,B,BI,I, CNI,PROFIT)
         if C0+PROFIT<L:
-            if verbose: print("Game over limit exceeded")
-            return PROFIT
-        
-    return PROFIT
+            if verbose: print("Game over limit exceeded, WEALTH %.3f"%(C0+PROFIT))
+            assert mu < r
+            return PROFIT, i+1
+    return PROFIT, len(returns)
 
 def plot_hist(x, filename=None):
     import matplotlib.pyplot as plt
-    plt.style.use('style.mplstyle')
+    #plt.style.use('style.mplstyle')
 
     fig,ax = plt.subplots()
     
@@ -75,37 +82,37 @@ def plot_hist(x, filename=None):
     ax.annotate(r"P(profit $<0$): %.3f"%(np.sum(x<0)/len(x)), xy=(legpos.p0[0],legpos.p1[1]))
     ax.annotate(r"E(profit): $%.1f^{+%.1f}_{%.1f}$"%(percs[2],percs[-2]-percs[2], percs[1]-percs[2] ), xy=(legpos.p0[0],legpos.p1[1]+1000))
   
-
-    
     fig.tight_layout()
     if filename is not None:
         fig.savefig(filename,dpi=200)
     plt.close(fig)
     
 def main():
-    
-    
-    #maximum allow loss
+    #Getting minimum allowed loss
     r=fsolve(func,-0.1826)[0]
-    print(r)
+    print("\n","Minimum allowed return is :", r, "\n")
 
+    returns=[mu]*N
+    finalprofit, cycles=get_profit(returns,r,verbose=True)
+    print("*"*40)
+    print("Final profit: ",finalprofit)
+    print("*"*40, "\n")
 
-    returns=[mu]*5
-    finalprofit=get_profit(returns,r,verbose=True)
-    print(finalprofit)
-
+    # EXTRA
+    # Drawing from the distribution
+    nexp=int(1e+5)
+    print("Doing experiment with %i variable returns"%(nexp))
     
-    nexp=100000
-    nperiod=5
-    prof_list=[]; returns_list=[]
+    prof_list=[]; cyc=0
     for n in range(nexp):
-        returns=np.random.normal(loc=mu, scale=sigma, size=nperiod)
-        finalprofit=get_profit(returns,r)
+        returns=np.random.normal(loc=mu, scale=sigma, size=N)
+        finalprofit, cycles=get_profit(returns,r)
         prof_list.append(finalprofit)
-        
-    print(np.sum(np.array(prof_list)<-30)/(nexp*nperiod), "Game overs")
+        cyc+=cycles
+
+    print("Game overs %.6f percent"%(100*np.sum(np.array(prof_list)<-30)/(cyc)), "\n")
     plot_hist(np.array(prof_list), "profit_distribution_%iruns.png"%(nexp))
-    
+    print("Notice that percentage of game overs does not match 1.0 percent. This is because the first investment was maximal and represented a risk lower than 1.0 percent. In a circunstance where there is not maximal investments, for example set sigma 0.2. The percentage of game over will be 1.0 percent \n")
 
     
 if __name__ == "__main__":

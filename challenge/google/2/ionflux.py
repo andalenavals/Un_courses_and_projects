@@ -46,7 +46,7 @@ def get_times_div2(x):
 '''
 
 '''
-def Gn2(h):
+def Gn3(h):
     nkeys=2**(h-2)
     keynodes=[0]*nkeys
     for i in range(1, h-1):
@@ -58,9 +58,24 @@ def Gn2(h):
     return keynodes
 '''
 
+'''
+def get_key_nodes2(h):
+    nkeys=2**(h-2)
+    o=[]; s=0
+    for n in range(nkeys):
+        s+=count_adjent_ones(bin(n))
+        o.append(1+3*(n+1)+s)
+    #print(o)
+    return(o)
+def count_adjent_ones(a):
+    i=0
+    for s in a[::-1]:
+        if s=='1': i+=1
+        else: return i
+'''
 
 
-def Gn(h):
+def Gn2(h):
     nkeys=2**(h-2)
     gn=[[i]*int(nkeys*0.5**(i+1)) for i in range(h-2) ]
     gn[-1].append(gn[-1][0]+1)
@@ -82,7 +97,7 @@ def zipper(L):
 
 def get_key_nodes2(h):
     nkeys=2**(h-2)
-    gns=Gn(h)
+    gns=Gn2(h)
     #print(gns)
     #o=[sum(gns[:n])+1+3*n for n in range(1,nkeys+1)]
     o=[]; s=0
@@ -92,6 +107,18 @@ def get_key_nodes2(h):
     #print(o)
     return(o)
 
+def Gn(h):
+    nkeys=2**(h-2)
+    a=[h-3, h-2]
+    for i in range(h-3,0,-1):
+        b=[i-1]*int(nkeys*0.5**(i))
+        c=[0]*(len(a)+len(b))
+        c[0::2]=b
+        c[1::2]=a
+        a=c
+    #print(a)
+    return a 
+
 def get_key_nodes(h):
     nkeys=2**(h-2)
     o=[]; s=0
@@ -100,22 +127,12 @@ def get_key_nodes(h):
         o.append(1+3*(n+1)+s)
     #print(o)
     return(o)
-def count_adjent_ones(a):
-    i=0
-    for s in a[::-1]:
-        if s=='1': i+=1
-        else: return i
 
 
-
-def makeTree(h):
-    layers=[[] for i in range(h)]
-    n=2**h-1
-    q=0
-
-
+#print(Gn2(3))
+Gn2(30)
 #get_key_nodes2(25)
-get_key_nodes(25)
+#get_key_nodes(25)
 #print(Gn(4))
 #Gn(7)
 #Gn2(29)

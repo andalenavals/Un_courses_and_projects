@@ -39,7 +39,7 @@ def get_combinations(s,si,err=0.0):
         axis=np.where(np.concatenate(np.where(index==a))==0)[0]
         ind=np.flip(index, axis=axis).reshape(2**k)
         cont=f2([s[ind[-1]],si])*F(s[ind], err=err)
-        if cont < err: return aux
+        #if cont < err: return aux
         #print(ind, cont)
         aux+=cont
     return aux

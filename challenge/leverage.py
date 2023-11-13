@@ -110,7 +110,7 @@ def main():
         prof_list.append(finalprofit)
         cyc+=cycles
 
-    print("Game overs %.6f percent"%(100*np.sum(np.array(prof_list)<-30)/(cyc)), "\n")
+    print("Game overs %.6f percent"%(100*np.sum(np.array(prof_list)<-(C0-L))/(cyc)), "\n")
     plot_hist(np.array(prof_list), "profit_distribution_%iruns.png"%(nexp))
     print("Notice that percentage of game overs does not match 1.0 percent. This is because the first investment was maximal and represented a risk lower than 1.0 percent. In a circunstance where there is not maximal investments, for example set sigma 0.2. The percentage of game over will be 1.0 percent \n")
 

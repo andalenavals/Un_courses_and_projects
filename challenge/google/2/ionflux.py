@@ -1,7 +1,55 @@
 import math
+import numpy as np
+
 
 def solution(h,q):
-    return
+    #return list(map(find_father,  [h]*len(q), q))
+    return [find_father(h,x) for x in q]
+
+def find_father(h,x):
+    r=math.log2(x+1)
+    u= 2**(int(r)+1)-1
+    v= 2**int(r)-1
+    if r%1==0:
+        o=u
+    else:
+        if x==u-1 : return u
+        x-= v
+        o=find_father(int(r), x)+v
+    if o>2**h-1: return -1
+    return o
+
+
+
+#A=list(np.random.randint(1,2**30-1,size=10000))  
+#solution(30,A)
+    
+for i in range(1,16):
+    print(i, find_father(4, i))
+
+#print(find_father(30, 1070001824))
+
+print(solution(5,[19,14,28]))
+print(solution(3,[7,3,5,1]))
+
+'''
+def find_father(h,x):
+    r=math.log2(x+1)
+    ceil=int(r)
+    top=int(r)+1
+    if r%1==0:
+        o= 2**top-1
+    else:
+        if x==2**top -2: return 2**top-1
+        x-=2**(ceil)-1
+        o=find_father(ceil, x)
+        o+=2**(ceil)-1
+    if o>2**h-1: return -1
+    return o
+'''
+
+
+
 '''
 def makeTree2(h):
     layers=[[] for i in range(h)]
@@ -74,8 +122,17 @@ def count_adjent_ones(a):
         else: return i
 '''
 
+'''
+def get_key_nodes2(h):
+    knodes=[1]
+    for j in range(2,h):
+        knodes+=[l+2**j-1 for l in knodes]
+    #print(knodes)
+    return(knodes)
+'''
 
-def Gn2(h):
+'''
+def Gn3(h):
     nkeys=2**(h-2)
     gn=[[i]*int(nkeys*0.5**(i+1)) for i in range(h-2) ]
     gn[-1].append(gn[-1][0]+1)
@@ -95,9 +152,9 @@ def zipper(L):
     c[1::2]=b
     return c
 
-def get_key_nodes2(h):
+def get_key_nodes3(h):
     nkeys=2**(h-2)
-    gns=Gn2(h)
+    gns=Gn3(h)
     #print(gns)
     #o=[sum(gns[:n])+1+3*n for n in range(1,nkeys+1)]
     o=[]; s=0
@@ -106,70 +163,32 @@ def get_key_nodes2(h):
         o.append(1+3*n+s)
     #print(o)
     return(o)
+'''
+
+'''
+def get_key_nodes(h):
+    nkeys=2**(h-2)
+    gns=Gn(h)
+    o=[]; s=0
+    for n in range(1,nkeys+1):
+        s+=gns[n-1]
+        o.append(1+3*n+s)
+    #print(o)
+    return(o)
 
 def Gn(h):
-    nkeys=2**(h-2)
-    a=[h-3, h-2]
-    for i in range(h-3,0,-1):
+    m=h-2
+    nkeys=2**m
+    a=[m-1, m]
+    for i in range(m-1,0,-1):
         b=[i-1]*int(nkeys*0.5**(i))
         c=[0]*(len(a)+len(b))
         c[0::2]=b
         c[1::2]=a
         a=c
     #print(a)
-    return a 
-
-def get_key_nodes(h):
-    nkeys=2**(h-2)
-    o=[]; s=0
-    for n in range(nkeys):
-        s+=count_adjent_ones(bin(n))
-        o.append(1+3*(n+1)+s)
-    #print(o)
-    return(o)
-
-
-#print(Gn2(3))
-Gn2(30)
-#get_key_nodes2(25)
-#get_key_nodes(25)
-#print(Gn(4))
-#Gn(7)
-#Gn2(29)
-
-
-
-#makeTree3(25)
-            
-
+    return a
 '''
-class Layer:
-    def __init__(self):
-        self.nodes=[]
-    def add_node(n):
-        
-    
-class Node:
-    def __init__(self, number, child_l=None, child_l=None, father=None ):
-        self.number = number #id
-        self.child_l=child_l
-        self.child_r=child_r
-        self.father=father
 
-class Tree:
-    def __init__(self, h):
-        self.layers=[]
-    def fill(h):
-        n=2**h-1
-        nodes=[]
-        for i in range(1,n+1):
-            Node(i)
 
-    def add_node(n):
-        for i, l in enumerate(self.layers):
-            if l.is_empty()|l.have_single_child()|(l.size==2*self.layers[i+1].size):
-                l.add_node(n)
-                return
-'''
-            
 

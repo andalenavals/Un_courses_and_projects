@@ -1,3 +1,8 @@
+# How many different stairs can be done using n bricks
+# the trick to solve this problem is to use memory to avoid nested loops
+# sol with 2 cols, 3 cols+ ...
+#
+
 import math
 
 def make_tree(col1, s):

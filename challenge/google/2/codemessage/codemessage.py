@@ -1,9 +1,9 @@
 def solution(l,t):
     assert len(l)>=1
-    assert len(l)<=100
+    #assert len(l)<=100
     assert isinstance(t,int)
     assert t>0
-    assert t<=250
+    #assert t<=250
     r=find(l,t)
     assert len(r)==2
     assert r[0]<=r[1]
@@ -38,6 +38,12 @@ def tests():
     T=15
     print(solution(L,T))
     assert solution(L,T)==[-1,-1]
+
+    g=9999
+    L=[1]*g + [g]+[1]*g
+    T=g+1
+    print(solution(L,T))
+    
     print("Sucess")
 
 

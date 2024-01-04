@@ -1,7 +1,9 @@
 import math
-import numpy as np
 
-
+# the left diagonal (/) line is 2**h - 1, therefore log2(x+1) will help
+# to find the top of optimal subtree. From there we move down right following a diagonal \
+# and we see that the new subtree, is equivalent to one in the left minus the value in top
+# of the left subtree. i.e, it also scale as 2**h -1
 def solution(h,q):
     #return list(map(find_father,  [h]*len(q), q))
     return [find_father(h,x) for x in q]
@@ -10,10 +12,8 @@ def find_father(h,x):
     r=math.log2(x+1)
     u= 2**(int(r)+1)-1
     v= 2**int(r)-1
-    if r%1==0:
-        o=u
+    if (r%1==0)|(x==u-1): return u
     else:
-        if x==u-1 : return u
         x-= v
         o=find_father(int(r), x)+v
     if o>2**h-1: return -1

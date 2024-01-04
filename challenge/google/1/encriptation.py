@@ -1,5 +1,7 @@
-import string
-lowercases=string.ascii_lowercase
+#recieve a str and change only not capital letters for the
+# letter in the same position of the alphabet but in reverse order
+
+lowercases="abcdefghijklmnopqrstuvwxyz"
 
 def solution(x):
     assert isinstance(x,str)

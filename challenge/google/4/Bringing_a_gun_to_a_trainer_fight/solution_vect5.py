@@ -25,12 +25,10 @@ def solution(dimensions, your_position, trainer_position, distance):
         
         uniqt=set(Mt.flatten())-{0}
         target_directions+=len(uniqt)
-        '''
         for s in uniqt.intersection(set(M.flatten())-{0}):
             continue
             if min(D[M==s]) < min(Dt[Mt==s]):
                 target_directions-=1
-        '''
 
     endtime = datetime.now()
     print((endtime - starttime).total_seconds())
@@ -93,7 +91,7 @@ def aget_slopes(xlist, ylist, R):
     dl=D[:,:oy]  # left
     return [[r,dr], [l,dl]]
 
-print(solution([3,3], [1,1], [2,2], 10000) )
+print(solution([3,3], [1,1], [2,2], 5000) )
 '''
 print(solution([2,5], [1,2], [1,4], 11) )
 #solution([6,2], [5,1], [4,1], 4)

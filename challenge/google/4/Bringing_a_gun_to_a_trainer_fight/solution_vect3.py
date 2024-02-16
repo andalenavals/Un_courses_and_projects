@@ -7,7 +7,7 @@ def solution(dimensions, your_position, trainer_position, distance):
     R=distance
 
     #trivial solution
-    if ((x==tx)|(y==ty))&(math.hypot(x-tx,y-ty)<=R): tsol=1
+    if ((x==tx)|(y==ty))&(math.hypot(x-tx,y-ty)<=R): tsol=0
     else: tsol=0
     
     #right, left
@@ -20,6 +20,7 @@ def solution(dimensions, your_position, trainer_position, distance):
     target_directions=0
     for M,Mt,D, Dt in zip( get_slopes(x_list, y_list, R), get_slopes(tx_list, ty_list, R), get_distances(x_list, y_list, R), get_distances(tx_list, ty_list, R)):
         target_directions+=len(setter(Mt))
+        '''
         ar=0
         for s in set(setter(M)).intersection(set(setter(Mt))):
             #print(min(D[np.where(np.isclose(M,s))]) -  min(Dt[np.where(np.isclose(Mt,s))]))
@@ -29,7 +30,7 @@ def solution(dimensions, your_position, trainer_position, distance):
                 target_directions-=1
                 ar+=1
         print(ar, len(set(setter(M)).intersection(set(setter(Mt)))))
-
+        '''
     print(target_directions+tsol)
     return target_directions+tsol
         
@@ -54,7 +55,7 @@ def make_a_line(hor,thor, R):
 
     j_list=sorted(set(tl_list + l_list + [ori,0] + tr_list + r_list))
            
-    return l_list+[0]+r_list, tl_list+[ori]+tr_list, j_list
+    return l_list+r_list, tl_list+[ori]+tr_list, j_list
     #return l_list+r_list, tl_list+[ori]+tr_list, j_list
     #return l_list+r_list, tl_list+tr_list
 

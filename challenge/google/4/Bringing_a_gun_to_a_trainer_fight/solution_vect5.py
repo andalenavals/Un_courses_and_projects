@@ -22,16 +22,25 @@ def solution(dimensions, your_position, trainer_position, distance):
 
     target_directions=0
     for [M,D],[Mt,Dt] in zip( get_slopes(x_list, y_list, R), get_slopes(tx_list, ty_list, R)):
-        
         uniqt=set(Mt.flatten())-{0}
         target_directions+=len(uniqt)
         for s in uniqt.intersection(set(M.flatten())-{0}):
-            continue
+            '''
+            x,y=np.where(Mt==s)
+            if s in M[:x[0],:y[0]]:
+                target_directions-=1
+            '''
+            
             if min(D[M==s]) < min(Dt[Mt==s]):
                 target_directions-=1
+<<<<<<< HEAD
 
+=======
+            
+                
+>>>>>>> f0e3e11 (conflict)
     endtime = datetime.now()
-    print((endtime - starttime).total_seconds())
+    #print((endtime - starttime).total_seconds())
         
     return target_directions+trivial_sol
         
@@ -77,21 +86,13 @@ def get_slopes(xlist, ylist, R):
     dbl=D[:ox,:oy]   
 
     return [tr,dtr],[br,dbr],[bl,dbl],[tl,dtl]
-def aget_slopes(xlist, ylist, R):
-    D=np.hypot.outer(ylist, xlist)
-    total_uniq_directions=np.divide.outer(ylist, xlist)*(D<=R)
-    w,h=total_uniq_directions.shape
-    ox=w/2; oy=h/2
-    if xlist[oy]<0:oy+=1
-    
-    r=total_uniq_directions[:,oy:]  #right  
-    l=total_uniq_directions[:,:oy]  # left
 
-    dr=D[:,oy:]  # right  
-    dl=D[:,:oy]  # left
-    return [[r,dr], [l,dl]]
+print(solution([3,3], [1,1], [2,2], 600) )
 
+<<<<<<< HEAD
 print(solution([3,3], [1,1], [2,2], 5000) )
+=======
+>>>>>>> f0e3e11 (conflict)
 '''
 print(solution([2,5], [1,2], [1,4], 11) )
 #solution([6,2], [5,1], [4,1], 4)

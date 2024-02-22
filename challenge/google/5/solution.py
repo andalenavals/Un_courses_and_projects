@@ -1,32 +1,32 @@
-import math
 import decimal
-import numpy as np
-
 def solution(s):
-    decimal.getcontext().prec=100
- 
-    M=[(i*decimal.Decimal(2).sqrt()).to_eng_string().split(".") for i in range(1,10) ]
+    return sum_to_n(s).to_eng_string()[:-2]
+      
+def sum_to_n(n):
+    decimal.getcontext().prec=250
+    a=decimal.Decimal( (decimal.Decimal(n)*decimal.Decimal(2).sqrt()).to_eng_string().split(".")[0]) 
+    np=a-decimal.Decimal(n)
+    if int(a)>0: return decimal.Decimal(0.5)*a*(a+1)- np*(np+1) - sum_to_n(np)
+    else: return decimal.Decimal(0)
 
-    A=np.zeros((len(s),10))
-    for i,e in enumerate(s):
-         A[i][1:int(e)+1]=[ float('.'.join([ ''.join([ M[j][0],M[j][1][:len(s)-i-1] ]), M[j][1][len(s)-i-1:]]) ) for j in range(int(e))]
-
-    if len(A)==1: return str(int(np.floor(A).sum()))
-
-    aux=A[0]
-    for i in range(len(A)-1):
-        aux=np.add.outer(aux,A[i+1])
-    return str(int(np.floor(aux).sum()))    
-
-
+print(solution('9'*90))
     
-
+'''
 print(solution('9'))
 print(solution('99'))
 print(solution('999'))
 print(solution('9'*7))
-print(solution('9'*9))
-#print(solution('9'*90))
+print(solution('20'))
+print(solution('77'))
+print(solution('100'))
+print(solution('1000'))
+print(solution('25976'))
+
+#print(solution('9'*9))
+print(solution('9'*90))
+'''
+
+
 #solution('20')    
 #solution('100')     
 #solution('1000')
